@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { useToast } from 'primevue/usetoast'
-import type { Truck, TruckStatus } from '@/types/Trucks.ts'
+import type {Truck, TruckSorters, TruckStatus} from '@/types/Trucks.ts'
 import { TruckService } from '@/service/TruckService.ts'
 
 import TrucksTable from '@/components/TrucksTable.vue'
@@ -18,6 +18,7 @@ const currentTruckId = ref<string | number>()
 const trucksLoading = ref(true)
 const newTruckDialogOpen = ref(false)
 const editTruckDialogOpen = ref(false)
+const sorters = ref<TruckSorters>({ sort: null, order: null })
 
 const trucksStatuses = ref<TruckStatus[]>(['OUT_OF_SERVICE', 'LOADING', 'TO_JOB', 'AT_JOB', 'RETURNING'])
 
@@ -25,9 +26,17 @@ const searchTruck = useDebounceFn(async (by: string, val: string = '') => {
   await fetchTrucks({ [by]: val || null })
 }, 300, { maxWait: 1000 })
 
+const sortTrucks = async (by: string) => {
+  sorters.value.sort = by
+  sorters.value.order === 'asc' || !sorters.value.order
+      ? sorters.value.order = 'desc'
+      : sorters.value.order = 'asc'
+  await fetchTrucks()
+}
+
 async function fetchTrucks(params = {}) {
   trucksLoading.value = true
-  const trucksResponse = await TruckService.getTrucks(params, toast)
+  const trucksResponse = await TruckService.getTrucks({ ...params, ...sorters.value }, toast)
   trucks.value = trucksResponse?.data
   trucksAmount.value = +trucksResponse?.totalAmount
   trucksLoading.value = false
@@ -60,6 +69,7 @@ onMounted(async () => await fetchTrucks())
     :loading="trucksLoading"
     @page-change="fetchTrucks"
     @search-truck="searchTruck"
+    @sort-trucks="sortTrucks"
     @add-truck="newTruckDialogOpen = true"
     @edit-truck="editTruck"
     @remove-truck="removeTruck"

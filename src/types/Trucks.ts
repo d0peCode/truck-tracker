@@ -8,4 +8,9 @@ interface Truck {
   description: string
 }
 
-export type { Truck, TruckStatus }
+interface TruckSorters {
+  sort: string | null,
+  order: string | null
+}
+
+export type { Truck, TruckStatus, TruckSorters }

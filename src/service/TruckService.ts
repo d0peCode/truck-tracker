@@ -62,7 +62,7 @@ export const TruckService = {
 
   async editTruck(payload: Partial<Truck>, toast: ReturnType<typeof useToast>) {
     try {
-      const { data } = await AxiosInstance.put('/trucks', payload)
+      const { data } = await AxiosInstance.put(`/trucks/${payload.id}`, payload)
       return data
     }
     catch (e) {

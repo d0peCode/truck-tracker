@@ -20,6 +20,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'search-truck', by: string, val: string): void
+  (e: 'sort-trucks', by: string): void
   (e: 'add-truck'): void
   (e: 'edit-truck', id: number): void
   (e: 'remove-truck', id: number): void
@@ -27,12 +28,12 @@ const emit = defineEmits<{
 }>()
 
 const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  global: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   code: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  status: { value: null, matchMode: FilterMatchMode.IN },
-  description: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  description: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 })
 </script>
 
@@ -68,13 +69,18 @@ const filters = ref({
           {{ data.id }}
         </template>
         <template #filter="{ filterModel }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            class="p-column-filter"
-            placeholder="Query by id"
-            @input="emit('search-truck', 'id', filterModel.value)"
-          />
+          <div class="flex justify-center items-center">
+            <InputText
+                v-model="filterModel.value"
+                type="text"
+                class="p-column-filter"
+                placeholder="Query by id"
+                @input="emit('search-truck', 'id', filterModel.value)"
+            />
+            <button @click="emit('sort-trucks', 'id')">
+              <i class="pi pi-sort text-2xl ml-2"></i>
+            </button>
+          </div>
         </template>
       </Column>
       <Column header="Code" :show-filter-menu="false" filter-field="code" class="min-w-32">
@@ -84,13 +90,18 @@ const filters = ref({
           </div>
         </template>
         <template #filter="{ filterModel }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            class="p-column-filter"
-            placeholder="Query by code"
-            @input="emit('search-truck', 'code', filterModel.value)"
-          />
+          <div class="flex justify-center items-center">
+            <InputText
+              v-model="filterModel.value"
+              type="text"
+              class="p-column-filter"
+              placeholder="Query by code"
+              @input="emit('search-truck', 'code', filterModel.value)"
+            />
+            <button @click="emit('sort-trucks', 'code')">
+              <i class="pi pi-sort text-2xl ml-2"></i>
+            </button>
+          </div>
         </template>
       </Column>
       <Column header="Name" :show-filter-menu="false" filter-field="name" class="min-w-32">
@@ -100,12 +111,17 @@ const filters = ref({
           </div>
         </template>
         <template #filter="{ filterModel }">
-          <InputText
-            v-model="filterModel.value"
-            type="text" class="p-column-filter"
-            placeholder="Query by name"
-            @input="emit('search-truck', 'name', filterModel.value)"
-          />
+          <div class="flex justify-center items-center">
+            <InputText
+              v-model="filterModel.value"
+              type="text" class="p-column-filter"
+              placeholder="Query by name"
+              @input="emit('search-truck', 'name', filterModel.value)"
+            />
+            <button @click="emit('sort-trucks', 'name')">
+              <i class="pi pi-sort text-2xl ml-2"></i>
+            </button>
+          </div>
         </template>
       </Column>
       <Column
@@ -121,6 +137,7 @@ const filters = ref({
           </div>
         </template>
         <template #filter="{ filterModel }">
+          <div class="flex justify-center items-center">
           <Dropdown
             v-model="filterModel.value"
             :options="trucksStatuses"
@@ -135,6 +152,10 @@ const filters = ref({
               </div>
             </template>
           </Dropdown>
+            <button @click="emit('sort-trucks', 'status')">
+              <i class="pi pi-sort text-2xl ml-2"></i>
+            </button>
+          </div>
         </template>
       </Column>
       <Column header="Description" :show-filter-menu="false" filter-field="description" class="min-w-32">
