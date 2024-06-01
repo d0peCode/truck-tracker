@@ -83,6 +83,7 @@ onMounted(async () => await fetchTrucks())
     v-if="currentTruckId"
     v-model="editTruckDialogOpen"
     :truck-id="currentTruckId"
+    :key="currentTruckId"
     :trucks-statuses="trucksStatuses"
     @edit-truck="trucksChanged"
   />

@@ -18,6 +18,7 @@ const emit = defineEmits<{
   (e: 'edit-truck'): void
 }>()
 
+const initialTruckData = ref<Partial<Truck>>()
 const truck = ref<Partial<Truck>>({
   code: '',
   name: '',
@@ -32,8 +33,38 @@ const isFormValid = computed(() => {
   return !(truck.value?.code && truck.value?.name && truck.value?.status)
 })
 
+const statusesOptions = computed(() => {
+  const currentStatus = initialTruckData.value?.status
+
+  return props.trucksStatuses.filter((status: TruckStatus) => {
+    if (status === 'OUT_OF_SERVICE') {
+      return true
+    }
+
+    if (currentStatus === 'LOADING' && status !== 'TO_JOB') {
+      return false
+    } else if (currentStatus === 'TO_JOB' && status !== 'AT_JOB') {
+      return false
+    } else if (currentStatus === 'AT_JOB' && status !== 'RETURNING') {
+      return false
+    } else if (currentStatus === 'RETURNING' && status !== 'LOADING') {
+      return false
+    } else if (
+      currentStatus && !['LOADING', 'TO_JOB', 'AT_JOB', 'RETURNING'].includes(currentStatus)
+    ) {
+      return false
+    }
+
+    return true
+  }).map((status: TruckStatus) => ({
+    label: status,
+    value: status
+  }))
+})
+
 const getTruck = async () => {
   truck.value = await TruckService.getTruck(props.truckId, toast)
+  initialTruckData.value = { ...truck.value }
 }
 
 async function editTruck() {
@@ -48,15 +79,23 @@ onMounted(async () => getTruck())
 
 <template>
   <Dialog
-      v-model:visible="visible"
-      modal
-      header="Edit truck"
-      class="w-96"
+    v-model:visible="visible"
+    modal
+    header="Edit truck"
+    class="w-96"
   >
     <form class="flex flex-col" @submit.prevent="editTruck">
       <InputText v-model="truck.code" placeholder="Code" class="my-1" required />
       <InputText v-model="truck.name" placeholder="Name" class="my-1" required />
-      <Dropdown v-model="truck.status" :options="trucksStatuses" placeholder="Status" class="my-1" />
+      <Dropdown
+          v-model="truck.status"
+          :options="statusesOptions"
+          :option-disabled="'disabled'"
+          option-label="label"
+          option-value="value"
+          :placeholder="truck.status"
+          class="my-1"
+      />
       <Textarea v-model="truck.description" placeholder="Description" rows="5" cols="30" class="my-1" />
       <Button label="Save" type="submit" class="mt-4" :disabled="isFormValid" />
     </form>
