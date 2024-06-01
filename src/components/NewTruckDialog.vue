@@ -10,7 +10,7 @@ import { TruckService } from '@/service/TruckService.ts'
 import type { Truck, TruckStatus } from '@/types/Trucks.ts'
 import { useAlphanumericInput } from '@/composables/useAlphanumericInput.ts'
 
-defineProps<{
+const props = defineProps<{
   trucksStatuses: TruckStatus[]
 }>()
 
@@ -33,6 +33,11 @@ const newTruck = ref<Partial<Truck>>({ ...initialState })
 const isFormValid = computed(() => {
   return !(newTruck.value.code && newTruck.value.name && newTruck.value.status)
 })
+
+const statusesOptions = computed(() => props.trucksStatuses.map((status: TruckStatus) => ({
+  label: status.replaceAll('_', ' '),
+  value: status,
+})))
 
 async function addTruck() {
   const res = await TruckService.addTruck(newTruck.value, toast)
@@ -64,9 +69,18 @@ const { handleKeydown, handlePaste } = useAlphanumericInput((_, value) => {
         @paste="handlePaste"
       />
       <InputText v-model="newTruck.name" placeholder="Name" class="my-1" required />
-      <Dropdown v-model="newTruck.status" :options="trucksStatuses" placeholder="Status" class="my-1" />
+      <Dropdown
+          v-model="newTruck.status"
+          :options="statusesOptions"
+          option-label="label"
+          option-value="value"
+          placeholder="Status"
+          class="my-1"
+      />
       <Textarea v-model="newTruck.description" placeholder="Description" rows="5" cols="30" class="my-1" />
-      <Button label="Save" type="submit" class="mt-4" :disabled="isFormValid" />
+      <div :class="{ 'cursor-not-allowed': isFormValid }">
+        <Button label="Save" type="submit" class="mt-4 w-full" :disabled="isFormValid" />
+      </div>
     </form>
   </Dialog>
 </template>

@@ -30,10 +30,10 @@ function changeTheme() {
         class="flex flex-col items-center justify-center rounded-lg w-52 min-h-full text-white italic bg-gradient-to-r from-lime-500 to-blue-500 hover:from-pink-500 hover:to-yellow-500"
       >
         <h1 class="font-black text-3xl leading-8">
-          ColdRun
+          Truck
         </h1>
         <h2 class="text-xs">
-          Task
+          Tracker
         </h2>
       </router-link>
     </template>
@@ -49,14 +49,3 @@ function changeTheme() {
   </MegaMenu>
 </template>
 
-<style>
-.active-link {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  background-image: linear-gradient(to right, #84cc16, #4299e1);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-fill-color: transparent;
-}
-</style>

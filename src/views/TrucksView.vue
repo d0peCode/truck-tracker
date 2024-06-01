@@ -18,7 +18,7 @@ const currentTruckId = ref<string | number>()
 const trucksLoading = ref(true)
 const newTruckDialogOpen = ref(false)
 const editTruckDialogOpen = ref(false)
-const sorters = ref<TruckSorters>({ sort: 'id', order: 'desc' })
+const sorters = ref<TruckSorters>({ sort: null, order: null })
 
 const trucksStatuses = ref<TruckStatus[]>(['OUT_OF_SERVICE', 'LOADING', 'TO_JOB', 'AT_JOB', 'RETURNING'])
 
@@ -81,7 +81,6 @@ onMounted(async () => await fetchTrucks())
   />
   <EditTruckDialog
     v-if="currentTruckId"
-    :key="currentTruckId"
     v-model="editTruckDialogOpen"
     :truck-id="currentTruckId"
     :trucks-statuses="trucksStatuses"

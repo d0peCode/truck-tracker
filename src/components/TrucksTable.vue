@@ -154,7 +154,7 @@ const filters = ref({
       >
         <template #body="{ data }">
           <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
-            <span>{{ data.status }}</span>
+            <span>{{ data.status.replaceAll('_', ' ') }}</span>
           </div>
         </template>
         <template #filter="{ filterModel }">

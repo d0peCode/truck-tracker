@@ -185,7 +185,7 @@ export default {
       // Text & Outlined Button
       { 'hover:bg-surface-900/10 dark:hover:bg-[rgba(255,255,255,0.03)]': (props.text || props.outlined) && props.severity === 'contrast' && !props.plain },
       // Disabled
-      { 'opacity-60 pointer-events-none cursor-default': context.disabled },
+      { 'opacity-60 pointer-events-none cursor-default bg-gray-400': context.disabled },
 
       // Transitions
       'transition duration-200 ease-in-out',
