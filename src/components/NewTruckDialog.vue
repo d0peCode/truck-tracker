@@ -70,14 +70,14 @@ const { handleKeydown, handlePaste } = useAlphanumericInput((_, value) => {
       />
       <InputText v-model="newTruck.name" placeholder="Name" class="my-1" required />
       <Dropdown
-          v-model="newTruck.status"
-          :options="statusesOptions"
-          option-label="label"
-          option-value="value"
-          placeholder="Status"
-          class="my-1"
+        v-model="newTruck.status"
+        :options="statusesOptions"
+        option-label="label"
+        option-value="value"
+        placeholder="Status"
+        class="my-1"
       />
-      <Textarea v-model="newTruck.description" placeholder="Description" rows="5" cols="30" class="my-1" />
+      <Textarea v-model="newTruck.description" placeholder="Description (optional)" rows="5" cols="30" class="my-1" />
       <div :class="{ 'cursor-not-allowed': isFormValid }">
         <Button label="Save" type="submit" class="mt-4 w-full" :disabled="isFormValid" />
       </div>

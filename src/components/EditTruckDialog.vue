@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
@@ -35,28 +35,31 @@ const isFormValid = computed(() => {
 })
 
 const statusesOptions = computed(() => {
-  const currentStatus = initialTruckData.value?.status;
+  const currentStatus = initialTruckData.value?.status
 
-  const statusOrder = ['LOADING', 'TO_JOB', 'AT_JOB', 'RETURNING'];
+  const statusOrder = ['LOADING', 'TO_JOB', 'AT_JOB', 'RETURNING']
 
   return props.trucksStatuses.filter((status: TruckStatus) => {
-    if (status === 'OUT_OF_SERVICE') return true;
+    if (status === 'OUT_OF_SERVICE')
+      return true
 
-    if (currentStatus === 'OUT_OF_SERVICE') return true;
+    if (currentStatus === 'OUT_OF_SERVICE')
+      return true
 
-    const currentIndex = statusOrder.indexOf(currentStatus as TruckStatus);
-    const nextIndex = statusOrder.indexOf(status);
+    const currentIndex = statusOrder.indexOf(currentStatus as TruckStatus)
+    const nextIndex = statusOrder.indexOf(status)
 
     // Check if status is a valid next status in the sequence
-    if (currentIndex !== -1 && nextIndex === currentIndex + 1) return true;
+    if (currentIndex !== -1 && nextIndex === currentIndex + 1)
+      return true
 
     // Allow "RETURNING" to "LOADING" transition
-    return currentStatus === 'RETURNING' && status === 'LOADING';
+    return currentStatus === 'RETURNING' && status === 'LOADING'
   }).map((status: TruckStatus) => ({
     label: status.replaceAll('_', ' '),
     value: status,
-  }));
-});
+  }))
+})
 
 async function getTruck() {
   truck.value = await TruckService.getTruck(props.truckId, toast)
@@ -103,7 +106,7 @@ const { handleKeydown, handlePaste } = useAlphanumericInput((_, value) => {
         :placeholder="truck.status"
         class="my-1"
       />
-      <Textarea v-model="truck.description" placeholder="Description" rows="5" cols="30" class="my-1" />
+      <Textarea v-model="truck.description" placeholder="Description (optional)" rows="5" cols="30" class="my-1" />
       <div :class="{ 'cursor-not-allowed': isFormValid }">
         <Button label="Save" type="submit" class="mt-4 w-full" :disabled="isFormValid" />
       </div>
