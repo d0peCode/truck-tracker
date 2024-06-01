@@ -8,6 +8,7 @@ import Button from 'primevue/button'
 import { useToast } from 'primevue/usetoast'
 import { TruckService } from '@/service/TruckService.ts'
 import type { Truck, TruckStatus } from '@/types/Trucks.ts'
+import {useAlphanumericInput} from "@/composables/useAlphanumericInput.ts";
 
 defineProps<{
   trucksStatuses: TruckStatus[]
@@ -39,6 +40,10 @@ async function addTruck() {
   newTruck.value = { ...initialState }
   emit('add-truck')
 }
+
+const { handleKeydown, handlePaste } = useAlphanumericInput((_, value) => {
+  newTruck.value.code = value;
+});
 </script>
 
 <template>
@@ -46,10 +51,17 @@ async function addTruck() {
     v-model:visible="visible"
     modal
     header="Add truck"
-    class="w-96"
+    class="w-96 max-w-[40rem]"
   >
     <form class="flex flex-col" @submit.prevent="addTruck">
-      <InputText v-model="newTruck.code" placeholder="Code" class="my-1" required />
+      <InputText
+          v-model="newTruck.code"
+          @keydown="handleKeydown"
+          @paste="handlePaste"
+          placeholder="Code"
+          class="my-1"
+          required
+      />
       <InputText v-model="newTruck.name" placeholder="Name" class="my-1" required />
       <Dropdown v-model="newTruck.status" :options="trucksStatuses" placeholder="Status" class="my-1" />
       <Textarea v-model="newTruck.description" placeholder="Description" rows="5" cols="30" class="my-1" />

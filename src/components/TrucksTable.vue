@@ -64,9 +64,16 @@ const filters = ref({
           Loading trucks data. Please wait.
         </p>
       </template>
-      <Column field="id" header="Id" :show-filter-menu="false" class="min-w-32">
+      <Column
+          field="id"
+          header="Id"
+          :show-filter-menu="false"
+          class="min-w-32 max-w-[20%]"
+      >
         <template #body="{ data }">
-          {{ data.id }}
+          <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
+            <span>{{ data.id }}</span>
+          </div>
         </template>
         <template #filter="{ filterModel }">
           <div class="flex justify-center items-center">
@@ -83,9 +90,9 @@ const filters = ref({
           </div>
         </template>
       </Column>
-      <Column header="Code" :show-filter-menu="false" filter-field="code" class="min-w-32">
+      <Column header="Code" :show-filter-menu="false" filter-field="code" class="min-w-32 max-w-[20%]">
         <template #body="{ data }">
-          <div class="flex align-items-center gap-2">
+          <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
             <span>{{ data.code }}</span>
           </div>
         </template>
@@ -104,9 +111,14 @@ const filters = ref({
           </div>
         </template>
       </Column>
-      <Column header="Name" :show-filter-menu="false" filter-field="name" class="min-w-32">
+      <Column
+          header="Name"
+          :show-filter-menu="false"
+          filter-field="name"
+          class="min-w-32 max-w-[20%]"
+      >
         <template #body="{ data }">
-          <div class="flex align-items-center gap-2">
+          <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
             <span>{{ data.name }}</span>
           </div>
         </template>
@@ -129,10 +141,10 @@ const filters = ref({
         filter-field="status"
         :show-filter-menu="false"
         :filter-menu-style="{ width: '14rem' }"
-        class="min-w-32"
+        class="min-w-32 max-w-[20%]"
       >
         <template #body="{ data }">
-          <div class="flex align-items-center gap-2">
+          <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
             <span>{{ data.status }}</span>
           </div>
         </template>
@@ -158,9 +170,14 @@ const filters = ref({
           </div>
         </template>
       </Column>
-      <Column header="Description" :show-filter-menu="false" filter-field="description" class="min-w-32">
+      <Column
+          header="Description"
+          :show-filter-menu="false"
+          filter-field="description"
+          class="min-w-32 max-w-[20%]"
+      >
         <template #body="{ data }">
-          <div class="flex align-items-center gap-2">
+          <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
             <span>{{ data.description || 'Description not provided' }}</span>
           </div>
         </template>

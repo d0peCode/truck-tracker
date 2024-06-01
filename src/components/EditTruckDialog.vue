@@ -8,6 +8,7 @@ import Button from 'primevue/button'
 import { useToast } from 'primevue/usetoast'
 import { TruckService } from '@/service/TruckService.ts'
 import type { Truck, TruckStatus } from '@/types/Trucks.ts'
+import {useAlphanumericInput} from "@/composables/useAlphanumericInput.ts";
 
 const props = defineProps<{
   truckId: number | string
@@ -74,6 +75,10 @@ async function editTruck() {
   emit('edit-truck')
 }
 
+const { handleKeydown, handlePaste } = useAlphanumericInput((_, value) => {
+  truck.value.code = value;
+});
+
 onMounted(async () => getTruck())
 </script>
 
@@ -82,10 +87,17 @@ onMounted(async () => getTruck())
     v-model:visible="visible"
     modal
     header="Edit truck"
-    class="w-96"
+    class="w-96 max-w-[40rem]"
   >
     <form class="flex flex-col" @submit.prevent="editTruck">
-      <InputText v-model="truck.code" placeholder="Code" class="my-1" required />
+      <InputText
+          v-model="truck.code"
+          @keydown="handleKeydown"
+          @paste="handlePaste"
+          placeholder="Code"
+          class="my-1"
+          required
+      />
       <InputText v-model="truck.name" placeholder="Name" class="my-1" required />
       <Dropdown
           v-model="truck.status"
