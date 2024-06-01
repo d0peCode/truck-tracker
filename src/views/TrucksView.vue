@@ -18,13 +18,13 @@ const currentTruckId = ref<string | number>()
 const trucksLoading = ref(true)
 const newTruckDialogOpen = ref(false)
 const editTruckDialogOpen = ref(false)
-const sorters = ref<TruckSorters>({ sort: null, order: null })
+const sorters = ref<TruckSorters>({ sort: 'id', order: 'desc' })
 
 const trucksStatuses = ref<TruckStatus[]>(['OUT_OF_SERVICE', 'LOADING', 'TO_JOB', 'AT_JOB', 'RETURNING'])
 
 const searchTruck = useDebounceFn(async (by: string, val: string = '') => {
   await fetchTrucks({ [by]: val || null })
-}, 300, { maxWait: 1000 })
+}, 300)
 
 const sortTrucks = async (by: string) => {
   sorters.value.sort = by

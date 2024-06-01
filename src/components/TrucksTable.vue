@@ -46,11 +46,11 @@ const filters = ref({
       data-key="id"
       filter-display="row"
       :loading="loading"
-      :global-filter-fields="['id', 'code']"
+      :global-filter-fields="['id', 'code', 'name', 'status', 'description']"
     >
       <template #header class="rounded-t-md">
         <div class="flex justify-between">
-          <InputText v-model="filters.global.value" class="min-w-80" placeholder="Client side keyword global search" />
+          <InputText v-model="filters.global.value" class="min-w-80" placeholder="Client side search (current page only)" />
           <Button label="Add new truck" @click="emit('add-truck')" />
         </div>
       </template>
@@ -68,6 +68,7 @@ const filters = ref({
           field="id"
           header="Id"
           :show-filter-menu="false"
+          :show-clear-button="false"
           class="min-w-32 max-w-[20%]"
       >
         <template #body="{ data }">
@@ -90,7 +91,13 @@ const filters = ref({
           </div>
         </template>
       </Column>
-      <Column header="Code" :show-filter-menu="false" filter-field="code" class="min-w-32 max-w-[20%]">
+      <Column
+          header="Code"
+          :show-filter-menu="false"
+          :show-clear-button="false"
+          filter-field="code"
+          class="min-w-32 max-w-[20%]"
+      >
         <template #body="{ data }">
           <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
             <span>{{ data.code }}</span>
@@ -114,6 +121,7 @@ const filters = ref({
       <Column
           header="Name"
           :show-filter-menu="false"
+          :show-clear-button="false"
           filter-field="name"
           class="min-w-32 max-w-[20%]"
       >
@@ -140,6 +148,7 @@ const filters = ref({
         header="Status"
         filter-field="status"
         :show-filter-menu="false"
+        :show-clear-button="false"
         :filter-menu-style="{ width: '14rem' }"
         class="min-w-32 max-w-[20%]"
       >
@@ -178,7 +187,7 @@ const filters = ref({
       >
         <template #body="{ data }">
           <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
-            <span>{{ data.description || 'Description not provided' }}</span>
+            <span>{{ data.description || '-' }}</span>
           </div>
         </template>
         <template #filter="{ filterModel }">
@@ -191,7 +200,7 @@ const filters = ref({
           />
         </template>
       </Column>
-      <Column header="Action">
+      <Column header="Actions">
         <template #body="{ data }">
           <div class="flex align-items-center gap-2">
             <button @click="emit('edit-truck', data.id)">
