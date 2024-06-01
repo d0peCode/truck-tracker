@@ -20,7 +20,7 @@ export const TruckService = {
           severity: 'error',
           summary: 'Can not fetch trucks',
           detail: e.response?.data.status,
-          life: 3000
+          life: 3000,
         })
       }
     }
@@ -37,7 +37,7 @@ export const TruckService = {
           severity: 'error',
           summary: 'Can not fetch truck',
           detail: e.response?.data.status,
-          life: 3000
+          life: 3000,
         })
       }
     }
@@ -54,7 +54,7 @@ export const TruckService = {
           severity: 'error',
           summary: 'Can not add truck',
           detail: e.response?.data.code,
-          life: 3000
+          life: 3000,
         })
       }
     }
@@ -71,7 +71,7 @@ export const TruckService = {
           severity: 'error',
           summary: 'Can not edit truck',
           detail: e.response?.data.code,
-          life: 3000
+          life: 3000,
         })
       }
     }
@@ -88,7 +88,7 @@ export const TruckService = {
           severity: 'error',
           summary: 'Can not remove truck',
           detail: e.response?.data.code,
-          life: 3000
+          life: 3000,
         })
       }
     }

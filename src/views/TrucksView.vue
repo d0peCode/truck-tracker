@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { useToast } from 'primevue/usetoast'
-import type {Truck, TruckSorters, TruckStatus} from '@/types/Trucks.ts'
+import type { Truck, TruckSorters, TruckStatus } from '@/types/Trucks.ts'
 import { TruckService } from '@/service/TruckService.ts'
 
 import TrucksTable from '@/components/TrucksTable.vue'
@@ -26,11 +26,11 @@ const searchTruck = useDebounceFn(async (by: string, val: string = '') => {
   await fetchTrucks({ [by]: val || null })
 }, 300)
 
-const sortTrucks = async (by: string) => {
+async function sortTrucks(by: string) {
   sorters.value.sort = by
   sorters.value.order === 'asc' || !sorters.value.order
-      ? sorters.value.order = 'desc'
-      : sorters.value.order = 'asc'
+    ? sorters.value.order = 'desc'
+    : sorters.value.order = 'asc'
   await fetchTrucks()
 }
 
@@ -47,7 +47,7 @@ async function removeTruck(truckId: string | number) {
   await fetchTrucks()
 }
 
-const editTruck = (id: string | number) => {
+function editTruck(id: string | number) {
   currentTruckId.value = id
   editTruckDialogOpen.value = true
 }
@@ -81,9 +81,9 @@ onMounted(async () => await fetchTrucks())
   />
   <EditTruckDialog
     v-if="currentTruckId"
+    :key="currentTruckId"
     v-model="editTruckDialogOpen"
     :truck-id="currentTruckId"
-    :key="currentTruckId"
     :trucks-statuses="trucksStatuses"
     @edit-truck="trucksChanged"
   />

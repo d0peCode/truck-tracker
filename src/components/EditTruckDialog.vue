@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
@@ -8,7 +8,7 @@ import Button from 'primevue/button'
 import { useToast } from 'primevue/usetoast'
 import { TruckService } from '@/service/TruckService.ts'
 import type { Truck, TruckStatus } from '@/types/Trucks.ts'
-import {useAlphanumericInput} from "@/composables/useAlphanumericInput.ts";
+import { useAlphanumericInput } from '@/composables/useAlphanumericInput.ts'
 
 const props = defineProps<{
   truckId: number | string
@@ -24,7 +24,7 @@ const truck = ref<Partial<Truck>>({
   code: '',
   name: '',
   status: '',
-  description: ''
+  description: '',
 })
 
 const visible = defineModel<boolean>()
@@ -38,46 +38,46 @@ const statusesOptions = computed(() => {
   const currentStatus = initialTruckData.value?.status
 
   return props.trucksStatuses.filter((status: TruckStatus) => {
-    if (status === 'OUT_OF_SERVICE') {
+    if (status === 'OUT_OF_SERVICE')
       return true
-    }
 
-    if (currentStatus === 'LOADING' && status !== 'TO_JOB') {
+    if (currentStatus === 'LOADING' && status !== 'TO_JOB')
       return false
-    } else if (currentStatus === 'TO_JOB' && status !== 'AT_JOB') {
+    else if (currentStatus === 'TO_JOB' && status !== 'AT_JOB')
       return false
-    } else if (currentStatus === 'AT_JOB' && status !== 'RETURNING') {
+    else if (currentStatus === 'AT_JOB' && status !== 'RETURNING')
       return false
-    } else if (currentStatus === 'RETURNING' && status !== 'LOADING') {
+    else if (currentStatus === 'RETURNING' && status !== 'LOADING')
       return false
-    } else if (
+    else if (
       currentStatus && !['LOADING', 'TO_JOB', 'AT_JOB', 'RETURNING'].includes(currentStatus)
-    ) {
+    )
       return false
-    }
 
     return true
   }).map((status: TruckStatus) => ({
     label: status,
-    value: status
+    value: status,
   }))
 })
 
-const getTruck = async () => {
+async function getTruck() {
   truck.value = await TruckService.getTruck(props.truckId, toast)
   initialTruckData.value = { ...truck.value }
 }
 
 async function editTruck() {
-  if (!truck.value) return
+  if (!truck.value)
+    return
   const res = await TruckService.editTruck(truck.value, toast)
-  if (!res) return
+  if (!res)
+    return
   emit('edit-truck')
 }
 
 const { handleKeydown, handlePaste } = useAlphanumericInput((_, value) => {
-  truck.value.code = value;
-});
+  truck.value.code = value
+})
 
 onMounted(async () => getTruck())
 </script>
@@ -91,22 +91,22 @@ onMounted(async () => getTruck())
   >
     <form class="flex flex-col" @submit.prevent="editTruck">
       <InputText
-          v-model="truck.code"
-          @keydown="handleKeydown"
-          @paste="handlePaste"
-          placeholder="Code"
-          class="my-1"
-          required
+        v-model="truck.code"
+        placeholder="Code"
+        class="my-1"
+        required
+        @keydown="handleKeydown"
+        @paste="handlePaste"
       />
       <InputText v-model="truck.name" placeholder="Name" class="my-1" required />
       <Dropdown
-          v-model="truck.status"
-          :options="statusesOptions"
-          :option-disabled="'disabled'"
-          option-label="label"
-          option-value="value"
-          :placeholder="truck.status"
-          class="my-1"
+        v-model="truck.status"
+        :options="statusesOptions"
+        option-disabled="disabled"
+        option-label="label"
+        option-value="value"
+        :placeholder="truck.status"
+        class="my-1"
       />
       <Textarea v-model="truck.description" placeholder="Description" rows="5" cols="30" class="my-1" />
       <Button label="Save" type="submit" class="mt-4" :disabled="isFormValid" />

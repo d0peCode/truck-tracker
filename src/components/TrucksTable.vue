@@ -3,10 +3,10 @@ import { ref } from 'vue'
 
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
-import Paginator from "primevue/paginator"
+import Paginator from 'primevue/paginator'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
-import Dropdown from "primevue/dropdown"
+import Dropdown from 'primevue/dropdown'
 
 import { FilterMatchMode } from 'primevue/api'
 import type { Truck, TruckStatus } from '@/types/Trucks.ts'
@@ -48,7 +48,7 @@ const filters = ref({
       :loading="loading"
       :global-filter-fields="['id', 'code', 'name', 'status', 'description']"
     >
-      <template #header class="rounded-t-md">
+      <template #header>
         <div class="flex justify-between">
           <InputText v-model="filters.global.value" class="min-w-80" placeholder="Client side search (current page only)" />
           <Button label="Add new truck" @click="emit('add-truck')" />
@@ -65,11 +65,11 @@ const filters = ref({
         </p>
       </template>
       <Column
-          field="id"
-          header="Id"
-          :show-filter-menu="false"
-          :show-clear-button="false"
-          class="min-w-32 max-w-[20%]"
+        field="id"
+        header="Id"
+        :show-filter-menu="false"
+        :show-clear-button="false"
+        class="min-w-32 max-w-[20%]"
       >
         <template #body="{ data }">
           <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
@@ -79,24 +79,24 @@ const filters = ref({
         <template #filter="{ filterModel }">
           <div class="flex justify-center items-center">
             <InputText
-                v-model="filterModel.value"
-                type="text"
-                class="p-column-filter"
-                placeholder="Query by id"
-                @input="emit('search-truck', 'id', filterModel.value)"
+              v-model="filterModel.value"
+              type="text"
+              class="p-column-filter"
+              placeholder="Query by id"
+              @input="emit('search-truck', 'id', filterModel.value)"
             />
             <button @click="emit('sort-trucks', 'id')">
-              <i class="pi pi-sort text-2xl ml-2"></i>
+              <i class="pi pi-sort text-2xl ml-2" />
             </button>
           </div>
         </template>
       </Column>
       <Column
-          header="Code"
-          :show-filter-menu="false"
-          :show-clear-button="false"
-          filter-field="code"
-          class="min-w-32 max-w-[20%]"
+        header="Code"
+        :show-filter-menu="false"
+        :show-clear-button="false"
+        filter-field="code"
+        class="min-w-32 max-w-[20%]"
       >
         <template #body="{ data }">
           <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
@@ -113,17 +113,17 @@ const filters = ref({
               @input="emit('search-truck', 'code', filterModel.value)"
             />
             <button @click="emit('sort-trucks', 'code')">
-              <i class="pi pi-sort text-2xl ml-2"></i>
+              <i class="pi pi-sort text-2xl ml-2" />
             </button>
           </div>
         </template>
       </Column>
       <Column
-          header="Name"
-          :show-filter-menu="false"
-          :show-clear-button="false"
-          filter-field="name"
-          class="min-w-32 max-w-[20%]"
+        header="Name"
+        :show-filter-menu="false"
+        :show-clear-button="false"
+        filter-field="name"
+        class="min-w-32 max-w-[20%]"
       >
         <template #body="{ data }">
           <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">
@@ -139,7 +139,7 @@ const filters = ref({
               @input="emit('search-truck', 'name', filterModel.value)"
             />
             <button @click="emit('sort-trucks', 'name')">
-              <i class="pi pi-sort text-2xl ml-2"></i>
+              <i class="pi pi-sort text-2xl ml-2" />
             </button>
           </div>
         </template>
@@ -159,31 +159,31 @@ const filters = ref({
         </template>
         <template #filter="{ filterModel }">
           <div class="flex justify-center items-center">
-          <Dropdown
-            v-model="filterModel.value"
-            :options="trucksStatuses"
-            placeholder="Any"
-            class="p-column-filter min-w-56"
-            :max-selected-labels="1"
-            @change="emit('search-truck', 'status', filterModel.value)"
-          >
-            <template #option="slotProps">
-              <div class="flex align-items-center gap-2">
-                <span>{{ slotProps.option }}</span>
-              </div>
-            </template>
-          </Dropdown>
+            <Dropdown
+              v-model="filterModel.value"
+              :options="trucksStatuses"
+              placeholder="Any"
+              class="p-column-filter min-w-56"
+              :max-selected-labels="1"
+              @change="emit('search-truck', 'status', filterModel.value)"
+            >
+              <template #option="slotProps">
+                <div class="flex align-items-center gap-2">
+                  <span>{{ slotProps.option }}</span>
+                </div>
+              </template>
+            </Dropdown>
             <button @click="emit('sort-trucks', 'status')">
-              <i class="pi pi-sort text-2xl ml-2"></i>
+              <i class="pi pi-sort text-2xl ml-2" />
             </button>
           </div>
         </template>
       </Column>
       <Column
-          header="Description"
-          :show-filter-menu="false"
-          filter-field="description"
-          class="min-w-32 max-w-[20%]"
+        header="Description"
+        :show-filter-menu="false"
+        filter-field="description"
+        class="min-w-32 max-w-[20%]"
       >
         <template #body="{ data }">
           <div class="flex align-items-center gap-2 break-all max-h-52 overflow-auto">

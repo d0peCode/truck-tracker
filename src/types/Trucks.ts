@@ -9,7 +9,7 @@ interface Truck {
 }
 
 interface TruckSorters {
-  sort: string | null,
+  sort: string | null
   order: string | null
 }
 
